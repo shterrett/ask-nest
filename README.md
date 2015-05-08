@@ -1,6 +1,7 @@
 # ask-nest
 
-A library to query a nest thermostat
+An application to compare the settings on a nest to the weather and inform a
+user whether they should turn on/off their HVAC and close/open their windows
 
 ## License
 
