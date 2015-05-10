@@ -13,9 +13,10 @@
           (is (= 200 (:status (nest-request token)))))
         (testing "returning nest data"
           (let [nest-data (read-devices token)]
-            (is (= ["Home"]
+            (is (= ["dLlhu0oXCfCqxL-0_-rmq9FZcrpy_1_bXI8uB6aDJtxLhNmXjw2iJQ"]
                   (keys (houses nest-data))))
             (is (= ["US"] (map :country-code (vals (houses nest-data)))))
+            (is (= ["Home"] (map :name (vals (houses nest-data)))))
             (is (= [:2-ShT4H3BvS8kWCWjPQZiHtAaHJ5cKch]
                    (keys (thermostats nest-data))))
             (is (= [68] (map :target_temperature_low_f
@@ -23,6 +24,6 @@
             (let [house (get (houses-with-thermostats
                                (houses nest-data)
                                (thermostats nest-data))
-                             "Home")]
+                             "dLlhu0oXCfCqxL-0_-rmq9FZcrpy_1_bXI8uB6aDJtxLhNmXjw2iJQ")]
               (is (= (:thermostat-ids house)
                      (map :device_id (:thermostats house)))))))))))

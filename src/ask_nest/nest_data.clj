@@ -12,9 +12,11 @@
 
 (defn houses [nest-data]
   (reduce (fn [hs h]
-            (into hs [[(:name h) {:postal-code (:postal_code h)
-                                  :country-code (:country_code h)
-                                  :thermostat-ids (:thermostats h)}]]))
+            (into hs [[(:structure_id h)
+                       {:name (:name h)
+                        :postal-code (:postal_code h)
+                        :country-code (:country_code h)
+                        :thermostat-ids (:thermostats h)}]]))
           {}
           (vals (:structures nest-data))))
 
@@ -27,9 +29,9 @@
     (map #(get therms %))))
 
 (defn houses-with-thermostats [house-map therms-map]
-  (reduce-kv (fn [hs name data]
+  (reduce-kv (fn [hs structure-id data]
                (assoc hs
-                      name
+                      structure-id
                       (assoc data
                              :thermostats
                              (thermostats-for-house data therms-map))))
