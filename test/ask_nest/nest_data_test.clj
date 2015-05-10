@@ -8,7 +8,7 @@
   (testing "data from nest api"
     (let [response (read-string (slurp "test/data/nest_api_root.clj"))
           token "secrettoken"]
-      (fake-http/with-fake-http ["https://developer-api.nest.com/" response]
+      (fake-http/with-fake-http [api-url response]
         (testing "fake data"
           (is (= 200 (:status (nest-request token)))))
         (testing "returning nest data"

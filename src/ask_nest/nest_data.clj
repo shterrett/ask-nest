@@ -1,19 +1,14 @@
 (ns ask-nest.nest-data
   (:require [org.httpkit.client :as http]
-            [clojure.data.json :as json]))
+            [ask-nest.data-shared :as data]))
+
+(def api-url "https://developer-api.nest.com/")
 
 (defn nest-request [token]
-  @(http/get "https://developer-api.nest.com/" {:query-params {:auth token}}))
-
-(defn to-json [response-body]
-  (json/read-str response-body :key-fn keyword))
+  @(http/get api-url {:query-params {:auth token}}))
 
 (defn read-devices [token]
-  (let [{:keys [status headers body error]} (nest-request token)]
-    (if error
-      {:error true
-       :message error}
-      (into {:error false} (to-json body)))))
+  (data/remote-request nest-request [token]))
 
 (defn houses [nest-data]
   (reduce (fn [hs h]
