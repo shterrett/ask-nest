@@ -6,45 +6,42 @@
 (deftest decision
   (testing "deciding nest and windows based on weather"
     (testing "future state of nest by temperature"
-      (let [warm-weather {:morning-temp 18
-                          :day-temp 20
-                          :evening-temp 19
-                          :night-temp 17}
-            cold-weather {:morning-temp 12
-                          :day-temp 14
-                          :evening-temp 11
-                          :night-temp 9}]
+      (let [warm-weather {:average-temp 78
+                          :average-apparent-temp 82}
+            cold-weather {:average-temp 50
+                          :average-apparent-temp 46}
+              really-hot-weather {:average-temp 90
+                                   :average-apparent-temp 94}]
       (testing "external temperature"
-          (is (= (/ (+ 18 20 19) 3) (external-temp warm-weather :morning)))
-          (is (= (/ (+ 19 17 18) 3) (external-temp warm-weather :evening))))
+          (is (= (/ (+ 78 82) 2) (external-temp warm-weather)))
+          (is (= (/ (+ 50 46) 2) (external-temp cold-weather))))
       (testing "currently heat"
-        (let [thermostat {:temperature_scale "C"
+        (let [thermostat {:temperature_scale "F"
                           :hvac_mode "heat"
-                          :target_temperature_high_c 18
-                          :target_temperature_low_c 16}]
-          (is (= :off (future-nest-state thermostat warm-weather :morning)))
-          (is (= :heat (future-nest-state thermostat cold-weather :morning)))))
+                          :target_temperature_high_f 76
+                          :target_temperature_low_f 72}]
+          (is (= :off (future-nest-state thermostat warm-weather)))
+          (is (= :heat (future-nest-state thermostat cold-weather)))))
       (testing "currently cool"
-        (let [thermostat {:temperature_scale "C"
+        (let [thermostat {:temperature_scale "F"
                           :hvac_mode "cool"
-                          :target_temperature_high_c 12
-                          :target_temperature_low_c 10}]
-          (println (external-temp cold-weather :morning))
-          (is (= :off (future-nest-state thermostat cold-weather :evening)))
-          (is (= :cool (future-nest-state thermostat warm-weather :morning)))))
+                          :target_temperature_high_f 76
+                          :target_temperature_low_f 72}]
+          (is (= :off (future-nest-state thermostat cold-weather)))
+          (is (= :cool (future-nest-state thermostat warm-weather)))))
       (testing "currently heat-cool"
-        (let [thermostat {:temperature_scale "C"
+        (let [thermostat {:temperature_scale "F"
                           :hvac_mode "heat-cool"
-                          :target_temperature_high_c 13
-                          :target_temperature_low_c 11}]
-          (is (= :off (future-nest-state thermostat cold-weather :morning)))
-          (is (= :heat-cool (future-nest-state thermostat cold-weather :evening)))
-          (is (= :heat-cool (future-nest-state thermostat warm-weather :morning)))))
+                          :target_temperature_high_f 81
+                          :target_temperature_low_f 79}]
+          (is (= :off (future-nest-state thermostat warm-weather)))
+          (is (= :heat-cool (future-nest-state thermostat cold-weather)))
+          (is (= :heat-cool (future-nest-state thermostat really-hot-weather)))))
       (testing "currently off"
-        (let [thermostat {:temperature_scale "C"
+        (let [thermostat {:temperature_scale "F"
                           :hvac_mode "off"
-                          :target_temperature_high_c 18
-                          :target_temperature_low_c 16}]
-          (is (= :off (future-nest-state thermostat warm-weather :evening)))
-          (is (= :cool (future-nest-state thermostat warm-weather :morning)))
-          (is (= :heat (future-nest-state thermostat cold-weather :morning)))))))))
+                          :target_temperature_high_f 81
+                          :target_temperature_low_f 79}]
+          (is (= :off (future-nest-state thermostat warm-weather)))
+          (is (= :cool (future-nest-state thermostat really-hot-weather)))
+          (is (= :heat (future-nest-state thermostat cold-weather)))))))))

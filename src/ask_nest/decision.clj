@@ -1,20 +1,16 @@
 (ns ask-nest.decision)
 
-(defn external-temp [{:keys [morning-temp
-                             day-temp
-                             evening-temp
-                             night-temp]}
-                      query-time]
-  (let [major-temp (if (= query-time :morning) day-temp night-temp)]
-    (/ (+ morning-temp evening-temp major-temp) 3)))
+(defn external-temp [{:keys [average-temp
+                             average-apparent-temp]}]
+    (/ (+ average-temp average-apparent-temp) 2))
 
 (defn nest-cool-comparison [thermostat external-temperature]
-  (if (>= (:target_temperature_high_c thermostat) external-temperature)
+  (if (>= (:target_temperature_high_f thermostat) external-temperature)
     :off
     :cool))
 
 (defn nest-heat-comparison [thermostat external-temperature]
-  (if (<= (:target_temperature_low_c thermostat) external-temperature)
+  (if (<= (:target_temperature_low_f thermostat) external-temperature)
     :off
     :heat))
 
@@ -38,7 +34,7 @@
    "heat-cool" nest-heat-cool-comparison
    "off" nest-off-comparison})
 
-(defn future-nest-state [thermostat weather query-time]
+(defn future-nest-state [thermostat weather]
   ((get nest-comparison-functions (:hvac_mode thermostat))
      thermostat
-     (external-temp weather query-time)))
+     (external-temp weather)))
