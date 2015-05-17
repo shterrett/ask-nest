@@ -4,6 +4,8 @@
             [clojure.string :as string :only join]
             [environ.core :refer [env]]))
 
+(def precipitation-threshold 0.3)
+
 (def api-url "https://api.forecast.io/forecast")
 
 (defn weather-request [token latitude longitude]
@@ -46,5 +48,5 @@
     {:average-temp (hourly-average :temperature)
      :average-apparent-temp (hourly-average :apparentTemperature)
      :max-precip-prob (max-val weather-data :hourly 12 :precipProbability)
-     :hours-likely-precip (count-greater-than weather-data :hourly 12 :precipProbability 0.30)
+     :hours-likely-precip (count-greater-than weather-data :hourly 12 :precipProbability precipitation-threshold)
      :precip-type (major-value weather-data :hourly 12 :precipType)}))
