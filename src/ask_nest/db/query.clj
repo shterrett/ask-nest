@@ -7,9 +7,7 @@
               :subprotocol "postgresql"
               :subname (str "//"
                             (string/join "/"
-                                         ["localhost:5432" (env :db)]))
-              :user "root"})
+                                         [(env :db-host) (env :db)]))
+              :user "stuart"})
 
-(defn query-path [file-name]
-  (string/join "/"
-               ["ask_nest" "db" "queries" (str file-name ".sql")]))
+(y/defqueries "ask_nest/db/queries/users.sql")
