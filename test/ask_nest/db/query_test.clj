@@ -1,19 +1,11 @@
 (ns ask-nest.db.query-test
   (:require [clojure.test :refer :all]
-            [clojure.java.jdbc :as jdbc]
             [clojure.string :as string :only [join]]
+            [ask-nest.test-helper :refer :all]
             [ask-nest.db.query :refer :all]
             [environ.core :refer [env]]))
 
-(declare ^:dynamic *txn*)
-
-(use-fixtures
-  :each
-  (fn [f]
-    (jdbc/with-db-transaction
-      [transaction db-spec]
-      (jdbc/db-set-rollback-only! transaction)
-      (binding [*txn* transaction] (f)))))
+(use-fixtures :each (transaction-rollback db-spec))
 
 (deftest queries
   (testing "database queries"
