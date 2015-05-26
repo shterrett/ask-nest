@@ -5,20 +5,22 @@
             [ask-nest.db.query :refer :all]
             [environ.core :refer [env]]))
 
+(declare ^:dynamic *txn*)
+
 (use-fixtures
   :each
   (fn [f]
     (jdbc/with-db-transaction
       [transaction db-spec]
       (jdbc/db-set-rollback-only! transaction)
-      (f))))
+      (binding [*txn* transaction] (f)))))
 
 (deftest queries
   (testing "database queries"
     (testing "user creation and retrieval"
-      (let [id (:id (first (create-user db-spec "sterrett" "123abc")))
-            other-id (:id (first (create-user db-spec "houdini" "456def")))]
+      (let [id (:id (first (create-user *txn* "sterrett" "123abc")))
+            other-id (:id (first (create-user *txn* "houdini" "456def")))]
         (is (= {:id id :username "sterrett" :nest_api_key "123abc"}
-               (first (user-by-id db-spec id))))
+               (first (user-by-id *txn* id))))
         (is (= ["sterrett" "houdini"]
-              (map :username (all-users db-spec))))))))
+              (map :username (all-users *txn*))))))))
