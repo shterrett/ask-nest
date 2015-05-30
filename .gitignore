@@ -12,3 +12,4 @@ pom.xml.asc
 .nrepl-port
 .lein-env
 profiles.clj
+*.log
