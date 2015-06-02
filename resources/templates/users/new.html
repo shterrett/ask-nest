@@ -1,0 +1,22 @@
+{% extends "templates/application.html" %}
+{% block main-id %}users-new{% endblock %}
+
+{% block content %}
+<header>
+  <h1>Sign Up</h1>
+</header>
+<form action="/users" method="post">
+  <label for="email">
+    email
+    <input type="email" name="email" />
+  </label>
+  <label for="phone-number">
+    phone number
+    <input type="tel" name="phone-number" />
+  </label>
+  <label for="api-key">
+    nest api key
+    <textarea name="api-key"></textarea>
+  </label>
+</form>
+{% endblock %}
