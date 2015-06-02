@@ -1,6 +1,7 @@
 (ns ask-nest.handler
   (:require [compojure.core :refer [defroutes routes wrap-routes]]
             [ask-nest.routes.home :refer [home-routes]]
+            [ask-nest.routes.user :refer [user-routes]]
             [ask-nest.middleware :as middleware]
             [ask-nest.session :as session]
             [compojure.route :as route]
@@ -13,7 +14,6 @@
 (defonce nrepl-server (atom nil))
 
 (defroutes base-routes
-           (route/resources "/")
            (route/not-found "Not Found"))
 
 (defn start-nrepl
@@ -66,5 +66,6 @@
 (def app
   (-> (routes
         (wrap-routes home-routes middleware/wrap-csrf)
+        (wrap-routes user-routes middleware/wrap-csrf)
         base-routes)
       middleware/wrap-base))
