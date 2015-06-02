@@ -1,0 +1,42 @@
+{% extends "application.html" %}
+{% block main-id %}users-new{% endblock %}
+
+{% block content %}
+<header>
+  <h1>Sign Up</h1>
+</header>
+<form action="/users" method="post">
+  {% csrf-field %}
+  <label for="email">
+    email
+    <input type="email" name="email" id="email" />
+  </label>
+  <label for="password">
+    password
+    <input type="password" name="password" id="password" />
+  </label>
+  <label for="confirm-password">
+    confirm password
+    <input type="password" name="confirm-password" id="confirm-password" />
+  </label>
+  <label for="phone-number">
+    phone number
+    <input type="tel" name="phone-number" id="phone-number" />
+  </label>
+  <label for="api-key">
+    nest pin
+    <textarea name="api-key" id="api-key"></textarea>
+  </label>
+  <div id="nest-pin-retrieval">
+    <p>
+      Follow the link below and log in to Nest. Paste the PIN number that is
+      shown on the screen into the field above
+    </p>
+    <a href="https://home.nest.com/login/oauth2?client_id=nest-client-id&state={{random-token}}">
+      nest authorization
+    </a>
+  </div>
+
+  <input type="submit" id="submit" value="submit" />
+</form>
+{% endblock %}

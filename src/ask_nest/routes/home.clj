@@ -1,8 +1,6 @@
 (ns ask-nest.routes.home
-  (:require [ask-nest.layout :as layout]
-            [compojure.core :refer [defroutes GET]]
-            [ring.util.http-response :refer [ok]]
-            [clojure.java.io :as io]))
+  (:require [compojure.core :refer [defroutes GET]]
+            [ring.util.http-response :refer [ok]]))
 
 (defn home-page []
   "<h1>Hello World</h1>")
