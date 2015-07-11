@@ -11,5 +11,7 @@
        :message error}
       (into {:error false} (to-json body)))))
 
-(defn to-int [string]
-  (Integer. (re-find #"\d+" string)))
+(defn to-int [token]
+  (if (number? token)
+    token
+    (Integer. (re-find #"\d+" token))))
