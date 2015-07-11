@@ -5,7 +5,7 @@
             [org.httpkit.fake :as fake-http]))
 
 (deftest nest_data
-  (testing "data from nest api"
+  (deftest retrieve-device-data
     (let [response (read-string (slurp "test/data/nest_api_root.clj"))
           token "secrettoken"]
       (fake-http/with-fake-http [api-url response]
@@ -26,4 +26,13 @@
                                (thermostats nest-data))
                              "dLlhu0oXCfCqxL-0_-rmq9FZcrpy_1_bXI8uB6aDJtxLhNmXjw2iJQ")]
               (is (= (:thermostat-ids house)
-                     (map :device_id (:thermostats house)))))))))))
+                     (map :device_id (:thermostats house))))))))))
+  (deftest retrieve-access-token
+    (let [response (read-string (slurp "test/data/nest_access_token.clj"))
+          pin "abc123"
+          client-id "gibberish"
+          client-secret "more&gibberish"
+          client-api-token "c.edWORRyvbQFkF2femy7hgQtazu8kLQTaVkCk2bqv66vyGKBMCABBUwd6VQUG9ZZ7ynGCctFgEtY73vpWS5Dk0hTHNNZEmvywSfLnbilOOjTA7djloRK6nQnHoKVDuMDCUcFPT2VvnToeaFuh"
+          ]
+      (fake-http/with-fake-http [token-url response]
+        (is (= client-api-token (get-token pin client-id client-secret)))))))
