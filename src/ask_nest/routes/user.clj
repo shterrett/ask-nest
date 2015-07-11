@@ -13,8 +13,8 @@
 
   (POST "/users" [email
                   phone-number
-                  api-key]
-    (let [id (handle/create-user email phone-number api-key)]
+                  nest-pin]
+    (let [id (handle/create-user email phone-number nest-pin)]
       (if id
         (redirect (clojure.string/join "/" ["/users" id "edit"]))
         (view/new))))
