@@ -16,11 +16,11 @@
                   nest-pin]
     (let [id (handle/create-user email phone-number nest-pin)]
       (if id
-        (redirect (clojure.string/join "/" ["/users" id "edit"]))
+        (redirect (clojure.string/join "/" ["/users" id]))
         (view/new))))
 
-  (GET "/users/:id/edit" [id]
-    (view/edit (first (db/user-by-id db/db-spec
+  (GET "/users/:id" [id]
+    (view/show (first (db/user-by-id db/db-spec
                                      (data/to-int id)))))
 
   (PUT "/users/:id" [] ))
