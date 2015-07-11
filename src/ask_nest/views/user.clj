@@ -11,5 +11,5 @@
 (defn new []
   (layout/render "users/new.html" {:random-token (random-token)}))
 
-(defn edit [user]
-  (layout/render "users/edit.html" user))
+(defn show [user]
+  (layout/render "users/show.html" user))
