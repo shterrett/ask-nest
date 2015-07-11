@@ -21,6 +21,6 @@
 
   (GET "/users/:id/edit" [id]
     (view/edit (first (db/user-by-id db/db-spec
-                                       (data/to-int id)))))
+                                     (data/to-int id)))))
 
   (PUT "/users/:id" [] ))
