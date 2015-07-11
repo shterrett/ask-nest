@@ -10,3 +10,6 @@
       {:error true
        :message error}
       (into {:error false} (to-json body)))))
+
+(defn to-int [string]
+  (Integer. (re-find #"\d+" string)))

@@ -14,7 +14,9 @@
   (init)
   (reset! server
           (run-jetty
-            (if (env :dev) (reload/wrap-reload #'app) app)
+            (if (= (env :clj-env) :development)
+              (reload/wrap-reload #'app)
+              app)
             {:port port
              :join? false})))
 
