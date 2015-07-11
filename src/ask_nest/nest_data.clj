@@ -1,6 +1,5 @@
 (ns ask-nest.nest-data
-  (:require [clojure.string :as string :only [join]]
-            [org.httpkit.client :as http]
+  (:require [org.httpkit.client :as http]
             [ask-nest.data-shared :as data]))
 
 (def api-url "https://developer-api.nest.com/")
