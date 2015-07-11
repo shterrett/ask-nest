@@ -1,5 +1,6 @@
 (ns ask-nest.nest-data
-  (:require [org.httpkit.client :as http]
+  (:require [clojure.string :as string :only [join]]
+            [org.httpkit.client :as http]
             [ask-nest.data-shared :as data]))
 
 (def api-url "https://developer-api.nest.com/")
@@ -37,3 +38,15 @@
                              (thermostats-for-house data therms-map))))
              {}
              house-map))
+
+(def token-url "https://api.home.nest.com/oauth2/access_token")
+
+(defn client-api-token [pin client-id client-secret]
+  @(http/post token-url
+              {:query-params {:code pin
+                              :client_id client-id
+                              :client_secret client-secret
+                              :grant_type "authorization_code"}}))
+
+(defn get-token [pin client-id client-secret]
+  (:access_token (data/remote-request client-api-token [pin client-id client-secret])))
