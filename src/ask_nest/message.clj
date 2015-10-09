@@ -1,5 +1,5 @@
 (ns ask-nest.message
-  (:require [clojure.string :as string]))
+  (:require [clojure.string :as string :only [join]]))
 
 (defn weather-string [forecast]
   (string/join ["It will be about "
