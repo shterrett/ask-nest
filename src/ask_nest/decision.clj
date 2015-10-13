@@ -70,4 +70,3 @@
           :else {:nest nest-state
                  :windows windows-state
                  :change (not= current-nest nest-state)})))
-
